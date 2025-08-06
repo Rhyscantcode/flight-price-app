@@ -2,9 +2,11 @@
 
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { onAuthStateChanged, User } from 'firebase/auth';
-import { auth } from '@/lib/firebase';
+import { auth, db } from '@/lib/firebase';
+import { doc, getDoc, setDoc, serverTimestamp } from 'firebase/firestore';
 import { usePathname, useRouter } from 'next/navigation';
 import { PlaneTakeoff } from 'lucide-react';
+import type { UserProfile } from '@/types';
 
 type AuthContextType = {
   user: User | null;
@@ -20,7 +22,21 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const pathname = usePathname();
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
+    const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        const userDocRef = doc(db, 'users', user.uid);
+        const userDoc = await getDoc(userDocRef);
+        if (!userDoc.exists()) {
+          // Create user profile in Firestore if it doesn't exist
+          const newUserProfile: UserProfile = {
+            id: user.uid,
+            email: user.email!,
+            displayName: user.displayName || user.email!.split('@')[0],
+            createdAt: serverTimestamp(),
+          };
+          await setDoc(userDocRef, newUserProfile);
+        }
+      }
       setUser(user);
       setLoading(false);
     });
@@ -31,7 +47,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     if (loading) return;
 
     const isAuthPage = pathname === '/login' || pathname === '/signup';
-    const isProtectedRoute = pathname === '/dashboard';
+    const isProtectedRoute = pathname.startsWith('/dashboard');
 
     if (!user && isProtectedRoute) {
       router.push('/login');
@@ -42,9 +58,13 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   }, [user, loading, router, pathname]);
   
   const isAuthPage = pathname === '/login' || pathname === '/signup';
-  const isProtectedRoute = pathname === '/dashboard';
+  const isProtectedRoute = pathname.startsWith('/dashboard');
+  
+  const showLoader = loading || 
+                     (!user && isProtectedRoute) || 
+                     (user && (isAuthPage || pathname === '/'));
 
-  if (loading || (!user && isProtectedRoute) || (user && (isAuthPage || pathname === '/'))) {
+  if (showLoader) {
     return (
       <div className="flex h-screen w-full flex-col items-center justify-center bg-background">
         <PlaneTakeoff className="h-12 w-12 animate-pulse text-primary" />

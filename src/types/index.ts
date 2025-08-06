@@ -9,3 +9,10 @@ export type FlightAlert = {
   targetPrice: number;
   createdAt: Timestamp;
 };
+
+export type UserProfile = {
+  id: string;
+  email: string;
+  displayName?: string;
+  createdAt: Timestamp;
+};
