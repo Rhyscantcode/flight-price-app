@@ -67,9 +67,11 @@ export function SettingsForm() {
     setIsSubmitting(true);
     try {
       // Update Firebase Auth profile
-      await updateProfile(auth.currentUser!, {
-        displayName: values.displayName,
-      });
+      if (auth.currentUser) {
+        await updateProfile(auth.currentUser, {
+          displayName: values.displayName,
+        });
+      }
 
       // Update Firestore profile
       const userDocRef = doc(db, "users", user.uid);

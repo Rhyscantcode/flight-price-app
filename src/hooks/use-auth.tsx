@@ -46,23 +46,25 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     if (loading) return;
 
-    const isAuthPage = pathname === '/login' || pathname === '/signup';
+    const isAuthPage = pathname === '/login' || pathname === '/signup' || pathname === '/password-reset';
+    const isLandingPage = pathname === '/';
     const isProtectedRoute = pathname.startsWith('/dashboard');
 
     if (!user && isProtectedRoute) {
       router.push('/login');
     }
-    if (user && (isAuthPage || pathname === '/')) {
+    if (user && (isAuthPage || isLandingPage)) {
       router.push('/dashboard');
     }
   }, [user, loading, router, pathname]);
   
-  const isAuthPage = pathname === '/login' || pathname === '/signup';
+  const isAuthPage = pathname === '/login' || pathname === '/signup' || pathname === '/password-reset';
+  const isLandingPage = pathname === '/';
   const isProtectedRoute = pathname.startsWith('/dashboard');
   
   const showLoader = loading || 
                      (!user && isProtectedRoute) || 
-                     (user && (isAuthPage || pathname === '/'));
+                     (user && (isAuthPage || isLandingPage));
 
   if (showLoader) {
     return (

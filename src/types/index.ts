@@ -8,6 +8,7 @@ export type FlightAlert = {
   dates: string;
   targetPrice: number;
   createdAt: Timestamp;
+  updatedAt?: Timestamp;
 };
 
 export type UserProfile = {
