@@ -58,7 +58,7 @@ export function SignupForm() {
       <CardHeader className="text-center">
         <PlaneTakeoff className="mx-auto h-10 w-10 text-primary" />
         <CardTitle className="text-2xl font-headline mt-4">Create an Account</CardTitle>
-        <CardDescription>Join Skyscanner Sentinel to start tracking flight prices.</CardDescription>
+        <CardDescription>Join Sky Sentinel to start tracking flight prices.</CardDescription>
       </CardHeader>
       <CardContent>
         <Form {...form}>

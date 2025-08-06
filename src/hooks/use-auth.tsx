@@ -68,7 +68,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     return (
       <div className="flex h-screen w-full flex-col items-center justify-center bg-background">
         <PlaneTakeoff className="h-12 w-12 animate-pulse text-primary" />
-        <p className="mt-4 text-muted-foreground">Loading Skyscanner Sentinel...</p>
+        <p className="mt-4 text-muted-foreground">Loading Sky Sentinel...</p>
       </div>
     );
   }

@@ -4,7 +4,7 @@ import { Toaster } from "@/components/ui/toaster";
 import './globals.css';
 
 export const metadata: Metadata = {
-  title: 'Skyscanner Sentinel',
+  title: 'Sky Sentinel',
   description: 'Your personal flight price watchdog.',
 };
 

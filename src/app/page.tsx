@@ -8,7 +8,7 @@ export default function LandingPage() {
       <header className="px-4 lg:px-6 h-16 flex items-center bg-background/80 backdrop-blur-sm border-b">
         <Link href="#" className="flex items-center justify-center gap-2" prefetch={false}>
           <PlaneTakeoff className="h-7 w-7 text-primary" />
-          <span className="text-xl font-bold font-headline">Skyscanner Sentinel</span>
+          <span className="text-xl font-bold font-headline">Sky Sentinel</span>
         </Link>
         <nav className="ml-auto flex gap-4 sm:gap-6">
           <Link
@@ -35,7 +35,7 @@ export default function LandingPage() {
                     Never Miss a Flight Deal Again
                   </h1>
                   <p className="max-w-[600px] text-muted-foreground md:text-xl">
-                    Skyscanner Sentinel is your personal flight price watchdog. Set your desired routes and get instant alerts when prices drop.
+                    Sky Sentinel is your personal flight price watchdog. Set your desired routes and get instant alerts when prices drop.
                   </p>
                 </div>
                 <div className="flex flex-col gap-2 min-[400px]:flex-row">
@@ -106,7 +106,7 @@ export default function LandingPage() {
         </section>
       </main>
       <footer className="flex flex-col gap-2 sm:flex-row py-6 w-full shrink-0 items-center px-4 md:px-6 border-t">
-        <p className="text-xs text-muted-foreground">&copy; 2024 Skyscanner Sentinel. All rights reserved.</p>
+        <p className="text-xs text-muted-foreground">&copy; 2024 Sky Sentinel. All rights reserved.</p>
       </footer>
     </div>
   );

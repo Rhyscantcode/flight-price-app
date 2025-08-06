@@ -37,7 +37,7 @@ export default function Header() {
     <header className="sticky top-0 z-30 flex h-16 items-center gap-4 border-b bg-background/95 px-4 backdrop-blur-sm md:px-6">
       <Link href="/dashboard" className="flex items-center gap-2 font-headline text-lg font-semibold">
         <PlaneTakeoff className="h-7 w-7 text-primary" />
-        <span className="hidden sm:inline-block">Skyscanner Sentinel</span>
+        <span className="hidden sm:inline-block">Sky Sentinel</span>
       </Link>
       <div className="flex w-full items-center gap-4 md:ml-auto md:gap-2 lg:gap-4 justify-end">
         <DropdownMenu>
