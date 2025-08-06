@@ -8,8 +8,9 @@ import { signOut } from 'firebase/auth';
 import { Button } from '@/components/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { LogOut, PlaneTakeoff, User as UserIcon, Settings } from 'lucide-react';
+import { LogOut, User as UserIcon, Settings } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
+import { Logo } from '@/components/logo';
 
 export default function Header() {
   const { user } = useAuth();
@@ -36,7 +37,7 @@ export default function Header() {
   return (
     <header className="sticky top-0 z-30 flex h-16 items-center gap-4 border-b bg-background/95 px-4 backdrop-blur-sm md:px-6">
       <Link href="/dashboard" className="flex items-center gap-2 font-headline text-lg font-semibold">
-        <PlaneTakeoff className="h-7 w-7 text-primary" />
+        <Logo />
         <span className="hidden sm:inline-block">Sky Sentinel</span>
       </Link>
       <div className="flex w-full items-center gap-4 md:ml-auto md:gap-2 lg:gap-4 justify-end">

@@ -13,7 +13,8 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { useToast } from "@/hooks/use-toast";
-import { Loader2, PlaneTakeoff } from "lucide-react";
+import { Loader2 } from "lucide-react";
+import { Logo } from '@/components/logo';
 
 const formSchema = z.object({
   email: z.string().email({ message: "Please enter a valid email address." }),
@@ -56,7 +57,7 @@ export function SignupForm() {
   return (
     <Card className="mx-auto max-w-sm w-full">
       <CardHeader className="text-center">
-        <PlaneTakeoff className="mx-auto h-10 w-10 text-primary" />
+        <Logo className="mx-auto h-10 w-10 text-primary" />
         <CardTitle className="text-2xl font-headline mt-4">Create an Account</CardTitle>
         <CardDescription>Join Sky Sentinel to start tracking flight prices.</CardDescription>
       </CardHeader>

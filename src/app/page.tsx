@@ -1,13 +1,14 @@
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { PlaneTakeoff, ShieldCheck, BellRing } from 'lucide-react';
+import { ShieldCheck, BellRing } from 'lucide-react';
+import { Logo } from '@/components/logo';
 
 export default function LandingPage() {
   return (
     <div className="flex flex-col min-h-screen bg-background">
       <header className="px-4 lg:px-6 h-16 flex items-center bg-background/80 backdrop-blur-sm border-b">
         <Link href="#" className="flex items-center justify-center gap-2" prefetch={false}>
-          <PlaneTakeoff className="h-7 w-7 text-primary" />
+          <Logo />
           <span className="text-xl font-bold font-headline">Sky Sentinel</span>
         </Link>
         <nav className="ml-auto flex gap-4 sm:gap-6">
@@ -76,7 +77,7 @@ export default function LandingPage() {
             <div className="mx-auto grid max-w-5xl items-center gap-6 py-12 lg:grid-cols-3 lg:gap-12">
               <div className="flex flex-col justify-center items-center space-y-4 text-center p-4 rounded-lg hover:bg-card hover:shadow-lg transition-all">
                 <div className="bg-primary/10 p-4 rounded-full">
-                  <PlaneTakeoff className="h-10 w-10 text-primary" />
+                  <Logo className="h-10 w-10 text-primary" />
                 </div>
                 <h3 className="text-xl font-bold font-headline">Create Alerts</h3>
                 <p className="text-muted-foreground">
