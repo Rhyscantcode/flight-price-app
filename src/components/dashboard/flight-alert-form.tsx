@@ -9,12 +9,10 @@ import { useToast } from "@/hooks/use-toast";
 import { db } from "@/lib/firebase";
 import { addDoc, collection, doc, serverTimestamp, updateDoc } from "firebase/firestore";
 import type { FlightAlert } from "@/types";
-import { estimateRoutePrice, type EstimateRoutePriceOutput } from "@/ai/flows/estimate-route-price";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { Loader2, Sparkles, Wand2 } from "lucide-react";
+import { Loader2 } from "lucide-react";
 
 interface FlightAlertFormProps {
   alertToEdit?: FlightAlert | null;
@@ -25,7 +23,6 @@ const formSchema = z.object({
   origin: z.string().min(1, "Origin is required."),
   destination: z.string().min(1, "Destination is required."),
   dates: z.string().min(1, "Dates are required."),
-  standardPrice: z.coerce.number().positive("Standard price must be a positive number for estimation."),
   targetPrice: z.coerce.number().positive("Target price must be a positive number."),
 });
 
@@ -33,8 +30,6 @@ export function FlightAlertForm({ alertToEdit, onFormSubmit }: FlightAlertFormPr
   const { user } = useAuth();
   const { toast } = useToast();
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isEstimating, setIsEstimating] = useState(false);
-  const [estimation, setEstimation] = useState<EstimateRoutePriceOutput | null>(null);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -42,7 +37,6 @@ export function FlightAlertForm({ alertToEdit, onFormSubmit }: FlightAlertFormPr
       origin: "",
       destination: "",
       dates: "",
-      standardPrice: 1000,
       targetPrice: 500,
     },
   });
@@ -54,46 +48,16 @@ export function FlightAlertForm({ alertToEdit, onFormSubmit }: FlightAlertFormPr
         destination: alertToEdit.destination,
         dates: alertToEdit.dates,
         targetPrice: alertToEdit.targetPrice,
-        standardPrice: 1000, // This is for estimation, not stored
       });
     } else {
       form.reset({
         origin: "",
         destination: "",
         dates: "",
-        standardPrice: 1000,
         targetPrice: 500,
       });
     }
   }, [alertToEdit, form]);
-
-  const handleEstimatePrice = async () => {
-    const { origin, destination, dates, standardPrice } = form.getValues();
-    if (!origin || !destination || !dates || !standardPrice) {
-      toast({
-        variant: "destructive",
-        title: "Missing Information",
-        description: "Please fill in origin, destination, dates, and a max standard price to get an estimation.",
-      });
-      return;
-    }
-
-    setIsEstimating(true);
-    setEstimation(null);
-    try {
-      const result = await estimateRoutePrice({ origin, destination, dates, standardPrice });
-      setEstimation(result);
-    } catch (error) {
-      console.error("AI Estimation Error:", error);
-      toast({
-        variant: "destructive",
-        title: "Estimation Failed",
-        description: "Could not get a price estimation. Please try again.",
-      });
-    } finally {
-      setIsEstimating(false);
-    }
-  };
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     if (!user) {
@@ -147,30 +111,6 @@ export function FlightAlertForm({ alertToEdit, onFormSubmit }: FlightAlertFormPr
           <FormItem><FormLabel>Travel Dates</FormLabel><FormControl><Input placeholder="e.g., October 2024" {...field} /></FormControl><FormMessage /></FormItem>
         )} />
         
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-end">
-          <FormField control={form.control} name="standardPrice" render={({ field }) => (
-            <FormItem><FormLabel>Max Standard Price</FormLabel><FormControl><Input type="number" placeholder="1000" {...field} /></FormControl><FormMessage /></FormItem>
-          )} />
-          <Button type="button" variant="outline" onClick={handleEstimatePrice} disabled={isEstimating} className="w-full md:w-auto">
-            {isEstimating ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Wand2 className="mr-2 h-4 w-4" />}
-            Estimate Standard Price
-          </Button>
-        </div>
-
-        {isEstimating && <div className="text-sm text-muted-foreground flex items-center"><Loader2 className="mr-2 h-4 w-4 animate-spin" /><span>Getting AI price estimation...</span></div>}
-
-        {estimation && (
-          <Alert className="bg-primary/10 border-primary/50">
-            <Sparkles className="h-4 w-4 text-primary" />
-            <AlertTitle className="font-headline text-primary">AI Price Suggestion</AlertTitle>
-            <AlertDescription>
-              Estimated standard price is around <strong>${estimation.estimatedPrice.toLocaleString()}</strong>.
-              <br/>
-              <span className="text-xs">{estimation.reasoning}</span>
-            </AlertDescription>
-          </Alert>
-        )}
-
         <FormField control={form.control} name="targetPrice" render={({ field }) => (
             <FormItem><FormLabel>Your Target Price ($)</FormLabel><FormControl><Input type="number" placeholder="500" {...field} /></FormControl><FormMessage /></FormItem>
         )} />
